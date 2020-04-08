@@ -1,11 +1,13 @@
 /*
+ * This implements a gRPC Client that communicates with a gRPC
+ * Server which returns a "Hello World" string
  *
- * Copyright 2015 gRPC authors.
- *
- *
+ * Reference:
+ * The implementation contained herein has been adapted from gRPC example code.
+ * https://grpc.io/docs/quickstart/go/
  */
 
-// Package main implements a client for Greeter service.
+// Package main implements a Client for Hello World service.
 package main
 
 import (
@@ -14,8 +16,8 @@ import (
 	"os"
 	"time"
 
-	"google.golang.org/grpc"
 	pb "github.com/alokswaincontact/demo-workspace/helloworld"
+	"google.golang.org/grpc"
 )
 
 const (
@@ -29,6 +31,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
+
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 
