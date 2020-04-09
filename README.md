@@ -44,6 +44,22 @@ $ go get -u google.golang.org/grpc
 $ go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
+# Testing
+The Server code in `main_server.go` can be tested using command
+**go test main_server_test.go** 
+
+A verbose output is shown below.
+```shell
+~/go/src/github.com/alokswaincontact/demo-workspace$ go test -v main_server_test.go 
+=== RUN   TestSayHello
+    TestSayHello: main_server_test.go:101: Reply :  Mocked Interface
+    TestSayHello: testing.go:789: In Go 1.14+ you no longer need to `ctrl.Finish()` if a *testing.T is passed to `NewController(...)`
+--- PASS: TestSayHello (0.00s)
+PASS
+ok      command-line-arguments  0.110s
+~/go/src/github.com/alokswaincontact/demo-workspace$
+```
+
 # Reference
 * gRPC Quick Start  
 The implementation contained herein has been adapted from gRPC example code.  

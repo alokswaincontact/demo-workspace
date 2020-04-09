@@ -1,22 +1,13 @@
 /*
+ * This code tests the Hello World gRPC Server that communicates with a gRPC
+ * Client and returns a "Hello World" string in reply.
  *
- * Copyright 2017 gRPC authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * Reference:
+ * The implementation contained herein has been adapted from gRPC example code.
+ * https://grpc.io/docs/quickstart/go/
  */
 
-package mock_helloworld_test
+package main
 
 import (
 	"context"
@@ -26,23 +17,16 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/golang/protobuf/proto"
-	helloworld "google.golang.org/grpc/examples/helloworld/helloworld"
-	hwmock "google.golang.org/grpc/examples/helloworld/mock_helloworld"
-	"google.golang.org/grpc/internal/grpctest"
+	grpc "google.golang.org/grpc"
+	helloworld "github.com/alokswaincontact/demo-workspace/helloworld"
 )
 
-type s struct {
-	grpctest.Tester
-}
-
-func Test(t *testing.T) {
-	grpctest.RunSubTests(t, s{})
-}
 
 // rpcMsg implements the gomock.Matcher interface
 type rpcMsg struct {
 	msg proto.Message
 }
+
 
 func (r *rpcMsg) Matches(msg interface{}) bool {
 	m, ok := msg.(proto.Message)
@@ -52,14 +36,53 @@ func (r *rpcMsg) Matches(msg interface{}) bool {
 	return proto.Equal(m, r.msg)
 }
 
+
 func (r *rpcMsg) String() string {
 	return fmt.Sprintf("is %s", r.msg)
 }
 
-func (s) TestSayHello(t *testing.T) {
+// Mock of GreeterClient interface
+type MockGreeterClient struct {
+	ctrl     *gomock.Controller
+	recorder *_MockGreeterClientRecorder
+}
+
+// Recorder for MockGreeterClient (not exported)
+type _MockGreeterClientRecorder struct {
+	mock *MockGreeterClient
+}
+
+func NewMockGreeterClient(ctrl *gomock.Controller) *MockGreeterClient {
+	mock := &MockGreeterClient{ctrl: ctrl}
+	mock.recorder = &_MockGreeterClientRecorder{mock}
+	return mock
+}
+
+func (_m *MockGreeterClient) EXPECT() *_MockGreeterClientRecorder {
+	return _m.recorder
+}
+
+func (_m *MockGreeterClient) SayHello(_param0 context.Context, _param1 *helloworld.HelloRequest, _param2 ...grpc.CallOption) (*helloworld.HelloReply, error) {
+	_s := []interface{}{_param0, _param1}
+	for _, _x := range _param2 {
+		_s = append(_s, _x)
+	}
+	ret := _m.ctrl.Call(_m, "SayHello", _s...)
+	ret0, _ := ret[0].(*helloworld.HelloReply)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+
+func (_mr *_MockGreeterClientRecorder) SayHello(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	_s := append([]interface{}{arg0, arg1}, arg2...)
+	return _mr.mock.ctrl.RecordCall(_mr.mock, "SayHello", _s...)
+}
+
+func TestSayHello(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	mockGreeterClient := hwmock.NewMockGreeterClient(ctrl)
+	mockGreeterClient := NewMockGreeterClient(ctrl)
 	req := &helloworld.HelloRequest{Name: "unit_test"}
 	mockGreeterClient.EXPECT().SayHello(
 		gomock.Any(),
