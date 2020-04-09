@@ -5,7 +5,7 @@ This contains the code for the VDart Digital's Coding Challenge using GoLang and
 The picture below explains how the Client and Server communicate with
 each other using gRPC calls.
 
-![architecture](https://github.com/alokswaincontact/demo-workspace/architecture.png)
+![architecture](https://github.com/alokswaincontact/demo-workspace/blob/master/architecture.png)
 
 The gRPC Client connects and sends a message to the gRPC Server, and the
 gRPC Server replies with a message that has a string with value `Hello World`.
