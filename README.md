@@ -32,6 +32,12 @@ compiler in MacOS using the command below.
 $ brew install golang
 ```
 
+To compile the `proto` files you need to protoc compiler. In MacOS 
+it can be installed using
+```shell
+$ brew install protobuf
+```
+
 To compile and run this code you would also need gRPC and protoc-gen-go.
 ```shell
 $ go get -u google.golang.org/grpc
@@ -39,15 +45,15 @@ $ go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
 # Reference
-gRPC Basics  
-
-The implementation contained herein has been adapted from gRPC example code.
+* gRPC Quick Start  
+The implementation contained herein has been adapted from gRPC example code.  
 https://grpc.io/docs/quickstart/go/
 
-gRPC Basics  
-
+* gRPC Basics  
 https://grpc.io/docs/tutorials/basic/go/#generating-client-and-server-code
 
-protoc: Protobuf compiler installation 
-
+* protoc: Protobuf compiler installation  
 http://google.github.io/proto-lens/installing-protoc.html
+
+* Google Protocol Buffers  
+https://github.com/golang/protobuf
