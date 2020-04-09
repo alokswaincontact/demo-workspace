@@ -1,6 +1,22 @@
 # VDart Digital's Coding Challenge using GoLang & gRPC
 This contains the code for the VDart Digital's Coding Challenge using GoLang and gRPC.
 
+# Architecture
+The gRPC Client connects and sends a message to the gRPC Server, and the
+gRPC Server replies with a message that has a string with value `Hello World`.
+The gRPC Client code is implemented in `main_client.go` and the gRPC
+Server code in `main_server.go`.
+
+The Client makes a [blocking](https://godoc.org/google.golang.org/grpc#WithBlock) call to
+the Server and after receipt of the message displays it and closes the connection.
+
+The gRPC Server waits and listens for Client connection on TCP port `50051` using
+`lis, err := net.Listen("tcp", ":50051")`.
+We create an instance of the gRPC server using `grpc.NewServer()`.
+We then register our service implementation with the gRPC server using
+`pb.RegisterGreeterServer(...)`
+Finally we call `Serve()` on the server with our port details to do a blocking
+wait until the process is killed or `Stop()` is called.
 
 # Execution
 The implementation has two parts the server and the client.
